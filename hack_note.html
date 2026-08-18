@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedSight 2D · Developer Documentation</title>
+  <!-- Font & base styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0c0e;
+      color: #e0e0e0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* glass-morphism card */
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.25rem;
+      backdrop-filter: blur(4px);
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 229, 255, 0.2);
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(0, 229, 255, 0.08);
+      color: #00e5ff;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+    }
+
+    .badge-emerald {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border-color: rgba(52, 211, 153, 0.25);
+    }
+
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.1);
+      color: #fbbf24;
+      border-color: rgba(251, 191, 36, 0.2);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #f0f9ff 0%, #a5f3fc 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h1 span {
+      color: #00e5ff;
+      -webkit-text-fill-color: #00e5ff;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-top: 1.8rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #f0f4f8;
+    }
+
+    h2 .badge {
+      font-size: 0.6rem;
+      padding: 0.15rem 0.7rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.6rem 0;
+      color: #d1d9e6;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 700px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 1.25rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin: 0.75rem 0 0.25rem;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 0.25rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #c8d0dc;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .pill .icon {
+      font-size: 0.9rem;
+    }
+
+    code, .code-block {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.85rem;
+      color: #b0d4f0;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .code-block {
+      display: block;
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #0a0c0f;
+      border-color: rgba(0, 229, 255, 0.1);
+      margin: 0.8rem 0;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    .hr-light {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin: 1.8rem 0;
+    }
+
+    .endpoint {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.6rem 1rem;
+      border-radius: 0.8rem;
+      border-left: 3px solid #00e5ff;
+      margin: 0.6rem 0 0.2rem;
+    }
+
+    .endpoint strong {
+      color: #a5f3fc;
+      font-weight: 600;
+    }
+
+    .endpoint .method {
+      color: #fcd34d;
+      font-weight: 600;
+    }
+
+    .tree {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #b9c7da;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.8rem 1.2rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .tree .highlight {
+      color: #00e5ff;
+    }
+
+    .roadmap-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .roadmap-step:last-child {
+      border-bottom: 0;
+    }
+
+    .step-num {
+      background: rgba(0, 229, 255, 0.08);
+      width: 28px;
+      height: 28px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #6b7a8f;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 1rem;
+    }
+
+    .text-muted {
+      color: #8b9bb0;
+      font-size: 0.9rem;
+    }
+
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="flex-row" style="justify-content: space-between; margin-bottom: 1.2rem;">
+    <div>
+      <h1>MedSight <span>2D</span></h1>
+      <div class="flex-row" style="margin-top: 0.2rem;">
+        <span class="badge">Multimodal AI</span>
+        <span class="badge badge-emerald">Zero Persistence</span>
+        <span class="badge badge-amber">Gemini 3.6 Flash</span>
+      </div>
+    </div>
+    <div style="font-size: 0.8rem; color: #7a8aa0; background: rgba(255,255,255,0.02); padding: 0.3rem 1rem; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05);">
+      v1.0.0 · 2026-08-12
+    </div>
+  </div>
+  <p style="font-size: 1.05rem; color: #cbd5e1; max-width: 720px; margin-bottom: 2rem;">
+    Universal multimodal medical image &amp; report synthesizer — dual patient/doctor perspectives,
+    context‑aware AI chat, and in‑memory processing.
+  </p>
+
+  <!-- OVERVIEW + STRUCTURE -->
+  <div class="grid-2">
+    <div class="card">
+      <h2 style="margin-top: 0;">📋 Overview</h2>
+      <ul style="list-style: none; padding: 0; color: #d1d9e6; font-size: 0.95rem;">
+        <li style="padding: 0.3rem 0;">✅ Chest X‑Ray, ECG, dermatology, lab reports (PDF)</li>
+        <li style="padding: 0.3rem 0;">✅ Patient‑friendly + clinical summaries</li>
+        <li style="padding: 0.3rem 0;">✅ Context‑locked chat assistant (Gemini)</li>
+        <li style="padding: 0.3rem 0;">✅ Text‑to‑speech, flagged terms with definitions</li>
+        <li style="padding: 0.3rem 0;">✅ <span style="color: #34d399;">Zero permanent storage</span> — memory only</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top: 0;">📁 Project Structure</h2>
+      <div class="tree">
+        <span class="highlight">medsight-2d/</span><br/>
+        ├── <span class="highlight">src/</span><br/>
+        │&nbsp;&nbsp;├── components/<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;├── AnalysisLoading.tsx<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;├── ChatPanel.tsx<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;├── DoctorView.tsx<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;├── Header.tsx<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;├── MediaPreview.tsx<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;├── PatientView.tsx<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;├── SafetyNoticeModal.tsx<br/>
+        │&nbsp;&nbsp;│&nbsp;&nbsp;└── UploadZone.tsx<br/>
+        │&nbsp;&nbsp;├── services/<span class="highlight">api.ts</span><br/>
+        │&nbsp;&nbsp;├── types/<span class="highlight">medical.ts</span><br/>
+        │&nbsp;&nbsp;├── App.tsx · main.tsx<br/>
+        ├── <span class="highlight">server.ts</span> (Express + Gemini)<br/>
+        ├── .env.example · package.json · vite.config.ts<br/>
+        └── README.md
+      </div>
+    </div>
+  </div>
+
+  <!-- STACK & API -->
+  <div class="card">
+    <h2 style="margin-top: 0;">🛠️ Technology Stack</h2>
+    <div class="grid-2">
+      <div>
+        <h3>Frontend</h3>
+        <div class="pill-group">
+          <span class="pill"><span class="icon">⚛️</span> React 18</span>
+          <span class="pill"><span class="icon">🟦</span> TypeScript</span>
+          <span class="pill"><span class="icon">⚡</span> Vite</span>
+          <span class="pill"><span class="icon">🎨</span> Tailwind</span>
+          <span class="pill"><span class="icon">🔊</span> Web Speech API</span>
+        </div>
+        <h3 style="margin-top: 1.2rem;">Backend</h3>
+        <div class="pill-group">
+          <span class="pill"><span class="icon">🟩</span> Node.js + Express</span>
+          <span class="pill"><span class="icon">🧠</span> Google GenAI SDK</span>
+          <span class="pill"><span class="icon">🔐</span> dotenv</span>
+        </div>
+        <h3 style="margin-top: 1.2rem;">AI / ML</h3>
+        <div class="pill-group">
+          <span class="pill"><span class="icon">✨</span> Gemini 3.6 Flash</span>
+          <span class="pill"><span class="icon">📐</span> Response Schema</span>
+          <span class="pill"><span class="icon">🧾</span> System Instructions</span>
+        </div>
+      </div>
+      <div>
+        <h3>📡 API Endpoints</h3>
+        <div class="endpoint">
+          <span class="method">GET</span> <strong>/api/health</strong><br/>
+          <span class="text-muted" style="font-size:0.85rem;">Service health &amp; Gemini key status</span>
+        </div>
+        <div class="endpoint">
+          <span class="method">POST</span> <strong>/api/analyze</strong><br/>
+          <span class="text-muted" style="font-size:0.85rem;">Upload base64 image/PDF → structured MedicalAnalysis</span>
+        </div>
+        <div class="endpoint">
+          <span class="method">POST</span> <strong>/api/chat</strong><br/>
+          <span class="text-muted" style="font-size:0.85rem;">Context‑aware Q&amp;A with Gemini, returns reply + suggestions</span>
+        </div>
+        <div style="margin-top: 0.8rem; font-size:0.9rem; background: rgba(0,0,0,0.2); padding: 0.5rem 0.8rem; border-radius: 0.7rem;">
+          <span class="badge badge-emerald">fallback</span> If <code>GEMINI_API_KEY</code> missing → mock structured responses
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKEND & FRONTEND HIGHLIGHTS -->
+  <div class="grid-2">
+    <div class="card">
+      <h2 style="margin-top: 0;">⚙️ Backend</h2>
+      <ul style="list-style: none; padding: 0; color: #d1d9e6; font-size: 0.95rem;">
+        <li style="padding: 0.3rem 0;">• <strong>Express</strong> with 20MB body limit</li>
+        <li style="padding: 0.3rem 0;">• <strong>Gemini</strong> system prompt enforces safety &amp; dual perspectives</li>
+        <li style="padding: 0.3rem 0;">• <strong>Response schema</strong> (Type.OBJECT) ensures structured JSON</li>
+        <li style="padding: 0.3rem 0;">• Media parser: data URLs, raw base64, SVG → normalized</li>
+        <li style="padding: 0.3rem 0;">• <strong>Fallback</strong> mode when API key absent (mock data)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top: 0;">🎨 Frontend</h2>
+      <ul style="list-style: none; padding: 0; color: #d1d9e6; font-size: 0.95rem;">
+        <li style="padding: 0.3rem 0;">• <strong>App state</strong>: analysis, loading, media, activeTab</li>
+        <li style="padding: 0.3rem 0;">• <strong>Chat</strong> context‑locked to analyzed media</li>
+        <li style="padding: 0.3rem 0;">• <strong>Glassmorphism</strong> design (cyan accent #00E5FF)</li>
+        <li style="padding: 0.3rem 0;">• <strong>Zero‑persistence</strong> banners &amp; safety modal</li>
+        <li style="padding: 0.3rem 0;">• TTS (speech synthesis) for assistant messages</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DEPLOYMENT ROADMAP -->
+  <div class="card">
+    <h2 style="margin-top: 0;">🚀 Deployment Roadmap</h2>
+    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+      <div class="roadmap-step">
+        <div class="step-num">1</div>
+        <div><strong>Prerequisites</strong> — Node.js 18+, npm, Gemini API key (optional)<br/>
+          <span class="code-block" style="display: inline-block; padding: 0.2rem 0.8rem; margin-top: 0.2rem;">cp .env.example .env</span>
+        </div>
+      </div>
+      <div class="roadmap-step">
+        <div class="step-num">2</div>
+        <div><strong>Development</strong><br/>
+          <code>npm install</code> · <code>npm run dev</code> (Vite + Express in middleware mode)
+        </div>
+      </div>
+      <div class="roadmap-step">
+        <div class="step-num">3</div>
+        <div><strong>Production build</strong><br/>
+          <code>npm run build</code> (frontend dist) + server.ts runs with static files
+        </div>
+      </div>
+      <div class="roadmap-step">
+        <div class="step-num">4</div>
+        <div><strong>Deploy options</strong><br/>
+          <span class="pill">Node + PM2</span>
+          <span class="pill">Docker</span>
+          <span class="pill">Vercel (serverless)</span>
+          <span class="pill">Render / Railway</span>
+          <span class="pill">AWS / GCP</span>
+        </div>
+      </div>
+      <div class="roadmap-step">
+        <div class="step-num">5</div>
+        <div><strong>Environment</strong> — <code>GEMINI_API_KEY</code>, <code>PORT</code>, <code>NODE_ENV</code></div>
+      </div>
+    </div>
+    <div style="margin-top: 1.2rem; background: rgba(0,229,255,0.03); padding: 0.8rem 1rem; border-radius: 0.8rem; border: 1px solid rgba(0,229,255,0.1);">
+      <span class="badge">🔒 Security</span> API keys in .env, body limits, HTTPS in production, no DB.
+    </div>
+  </div>
+
+  <!-- EXAMPLE RESPONSE + NOTES -->
+  <div class="grid-2">
+    <div class="card">
+      <h2 style="margin-top: 0;">📦 Sample Analysis Response</h2>
+      <div class="code-block" style="font-size: 0.75rem; max-height: 240px; overflow-y: auto;">
+{
+  "media_type": "Chest Radiograph",
+  "patient_summary": "Your chest X-ray shows ...",
+  "doctor_summary": "PA view demonstrates ...",
+  "key_findings": [
+    { "finding": "Cardiomegaly", "explanation": "Enlarged heart silhouette", "confidence": "moderate" }
+  ],
+  "flagged_terms": [
+    { "term": "Cardiomegaly", "simple_definition": "Enlargement of the heart" }
+  ],
+  "severity_level": "Moderate",
+  "recommended_discussion": ["Discuss cardiac evaluation"],
+  "limitations": "2D imaging lacks depth",
+  "disclaimer": "AI interpretation is not a diagnosis"
+}
+      </div>
+      <div style="margin-top: 0.6rem; font-size: 0.85rem; color: #8b9bb0;">
+        <span class="badge">schema</span> Strict JSON via Gemini responseSchema
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top: 0;">📌 Developer Notes</h2>
+      <ul style="list-style: none; padding: 0; color: #c8d0dc; font-size: 0.9rem;">
+        <li style="padding: 0.3rem 0;">• <strong>Zero persistence</strong> — no database, no disk storage</li>
+        <li style="padding: 0.3rem 0;">• <strong>Fallback</strong> mode works without Gemini key (mock)</li>
+        <li style="padding: 0.3rem 0;">• PDF treated as text‑extractable (no OCR yet)</li>
+        <li style="padding: 0.3rem 0;">• SVG → PNG conversion before Gemini</li>
+        <li style="padding: 0.3rem 0;">• <strong>Future</strong>: DICOM, full PDF OCR, multi‑language</li>
+      </ul>
+      <div style="margin-top: 0.8rem; background: rgba(251,191,36,0.05); border-radius: 0.6rem; padding: 0.4rem 0.8rem; border: 1px solid rgba(251,191,36,0.1);">
+        ⚠️ <span style="color: #fbbf24;">Not a diagnostic tool</span> — always consult a physician.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    MedSight 2D · MIT License · Built with React, Express &amp; Gemini · In‑memory only — no data persisted.
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "MedSight 2D",
+  "description": "Universal Multimodal Medical Image & Report Synthesizer",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
