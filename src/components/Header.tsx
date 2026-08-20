@@ -36,13 +36,13 @@ export const Header: React.FC<HeaderProps> = ({ onReset, onOpenSafetyModal, hasM
 
         {/* Action Controls & Badges */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+          {/* <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
             <Cpu className="w-3.5 h-3.5 text-[#00E5FF]" />
             <span className="flex items-center gap-1.5 font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               GEMINI-3.6-FLASH
             </span>
-          </div>
+          </div> */}
 
           <button
             onClick={onOpenSafetyModal}
@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({ onReset, onOpenSafetyModal, hasM
             title="Privacy & Safety Principles"
           >
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span className="hidden sm:inline">Zero Persistence</span>
+            <span className="hidden sm:inline">User Guide</span>
           </button>
 
           {hasMedia && (
